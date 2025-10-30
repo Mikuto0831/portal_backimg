@@ -1,3 +1,6 @@
 lib/
 node_modules/
 東京工科大学*
+
+# Release files
+*.zip
