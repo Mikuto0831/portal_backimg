@@ -2,7 +2,7 @@
 const BYTE_LIMIT = 8000;
 document.addEventListener('DOMContentLoaded', function () {
     // 同期ストレージを参照し反映させる
-    chrome.storage.sync.get(["img_url", "dark_mode"], function (data) {
+    chrome.storage.sync.get(["img_url", "dark_mode", "hide_chat_agent"], function (data) {
         // 最初にpopupを表示するときに現在設定されている画像をプレビュー表示する
         const url = data["img_url"];
         if (typeof url === "string" && url) {
@@ -13,6 +13,17 @@ document.addEventListener('DOMContentLoaded', function () {
         if (typeof dark_mode === "boolean") {
             const switchElement = document.getElementById('dark_mode_switch');
             switchElement.checked = dark_mode;
+        }
+        // 現在のチャットエージェント非表示設定を取得し、チェックボックスに反映させる
+        const hide_chat_agent = data["hide_chat_agent"];
+        if (typeof hide_chat_agent === "boolean") {
+            const switchElement = document.getElementById('hide_chat_agent_switch');
+            switchElement.checked = hide_chat_agent;
+        }
+        else {
+            // デフォルト値はtrue
+            const switchElement = document.getElementById('hide_chat_agent_switch');
+            switchElement.checked = true;
         }
     });
     // 画像URL入力受付～プレビューまでを行う
@@ -56,6 +67,10 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('dark_mode_switch').addEventListener('click', function () {
         const switchElement = document.getElementById('dark_mode_switch');
         chrome.storage.sync.set({ "dark_mode": switchElement.checked });
+    });
+    document.getElementById('hide_chat_agent_switch').addEventListener('click', function () {
+        const switchElement = document.getElementById('hide_chat_agent_switch');
+        chrome.storage.sync.set({ "hide_chat_agent": switchElement.checked });
     });
     // 関数宣言部
     /**

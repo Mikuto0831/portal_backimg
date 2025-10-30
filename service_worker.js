@@ -6,6 +6,14 @@ chrome.runtime.onInstalled.addListener(function (details) {
     }
     // アップデート時の挙動
     else if (details.reason === "update") {
+        // 既存の設定を取得して、新しいキーがなければ追加
+        chrome.storage.sync.get(null, function (data) {
+            if (!data.hasOwnProperty("hide_chat_agent")) {
+                chrome.storage.sync.set({ "hide_chat_agent": true }, function () {
+                    console.log("Added hide_chat_agent setting on update.");
+                });
+            }
+        });
         chrome.tabs.create({ "url": "https://github.com/Mikuto0831/portal_backimg/wiki/update" });
     }
 });
@@ -16,6 +24,7 @@ function syncStorageInit() {
     var defaultSettings = {
         "img_url": "",
         "dark_mode": false,
+        "hide_chat_agent": true,
     };
     chrome.storage.sync.set(defaultSettings, function () {
         if (chrome.runtime.lastError) {
