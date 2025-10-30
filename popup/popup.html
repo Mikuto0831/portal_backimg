@@ -13,6 +13,16 @@
         <h2>for TUT portal</h2>
     </a>
     <h3>設定画面</h3>
+    <h4>画像登録</h4>
+    <label for="url">設定したい画像のURLを入力してください<br>推奨画像形式:png,jpg,gif,bmp</label>
+    <div class="inputImgArea">
+        <input type="url" name="img_url" id="img_url" placeholder="https://example.com/example.png" pattern="https?://"
+            size="30" required />
+        <button name="button" id="send" style="cursor: not-allowed;">更新</button>
+    </div>
+    <p id="message"></p>
+    <span id="img_sample"></span>
+
     <h4>ダークモード</h4>
     <div class="inputSwitchArea">
         <label for="darkModeSwitchArea">ダークモードのON/OFF切り替えます</label>
@@ -24,22 +34,13 @@
     </div>
     <h4>こうかとんチャットエージェント非表示</h4>
     <div class="inputSwitchArea">
-        <label for="hideChatAgentSwitchArea">チャットエージェントの表示/非表示を切り替えます(offにする場合、一度画面をリロードしてください)</label>
+        <label for="hideChatAgentSwitchArea">チャットエージェントの表示/非表示を切り替えます<br><small>(offにする場合は画面をリロードしてください)</small></label>
         <div class="hideChatAgentSwitchArea">
             <input type="checkbox" id="hide_chat_agent_switch">
             <label for="hide_chat_agent_switch"><span></span></label>
             <div id="swImgChatAgent"></div>
         </div>
     </div>
-    <h4>画像登録</h4>
-    <label for="url">設定したい画像のURLを入力してください<br>推奨画像形式:png,jpg,gif,bmp</label>
-    <div class="inputImgArea">
-        <input type="url" name="img_url" id="img_url" placeholder="https://example.com/example.png" pattern="https?://"
-            size="30" required />
-        <button name="button" id="send" style="cursor: not-allowed;">更新</button>
-    </div>
-    <p id="message"></p>
-    <span id="img_sample"></span>
 
     <div class="sien-parts">
         <h2 id="sien">Mikutoを支援しよう</h2>

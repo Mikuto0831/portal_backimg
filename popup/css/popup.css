@@ -1,18 +1,28 @@
 body {
     min-width: 250px;
+    max-width: 350px;
+    padding: 10px;
 }
 
 div.inputImgArea {
     display: flex;
-    justify-content: center;
+    gap: 5px;
+    margin: 10px 0;
 }
 
 div.inputSwitchArea {
     display: flex;
-    justify-content: center;
     align-items: center;
+    gap: 10px;
+    margin: 10px 0 20px;
+}
 
-    margin: -16px auto -4px;
+div.inputSwitchArea>label {
+    font-size: 12px;
+    text-align: left;
+    color: #666;
+    flex: 1;
+    line-height: 1.4;
 }
 
 img {
@@ -23,25 +33,91 @@ img {
 h1 {
     font-size: 20px;
     text-align: center;
+    margin: 10px 0;
 }
 
 h2 {
     font-size: 18px;
     text-align: center;
+    margin: 10px 0;
+}
+
+h3 {
+    font-size: 16px;
+    text-align: left;
+    margin: 15px 0 10px;
+    border-bottom: 2px solid #333;
+    padding-bottom: 5px;
+}
+
+h4 {
+    font-size: 14px;
+    margin: 15px 0 5px;
+    color: #333;
+    text-align: left;
 }
 
 #send {
     white-space: nowrap;
 }
 
+#message {
+    text-align: left;
+    font-size: 12px;
+    margin: 5px 0;
+}
+
+#img_sample {
+    display: block;
+    text-align: left;
+}
+
 .sien-parts {
-    width: 90%;
     background-color: #c2f8ff;
-    margin: 2px auto 2px;
-    padding-left: 2%;
-    padding-right: 2%;
-    padding-bottom: 5px;
-    padding-top: 1px;
+    margin: 20px 0 10px;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.sien-parts h2 {
+    margin: 5px 0;
+    text-align: center;
+}
+
+.sien-parts p {
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 10px 0;
+    text-align: center;
+}
+
+input[type="url"] {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+button {
+    padding: 5px 15px;
+    border: 1px solid #333;
+    border-radius: 3px;
+    background-color: #fff;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+button:hover:not([style*="cursor: not-allowed"]) {
+    background-color: #f0f0f0;
+}
+
+label[for="url"] {
+    display: block;
+    font-size: 12px;
+    text-align: left;
+    margin: 10px 0 5px;
+    color: #666;
 }
 
 /* === ボタンを表示するエリア ============================== */
@@ -58,12 +134,12 @@ h2 {
 
     position: relative;
     /* 親要素が基点       */
-    margin: auto;
-    /* 中央寄せ           */
     width: 68px;
     /* ボタンの横幅       */
     background: #fff;
     /* デフォルト背景色   */
+    flex-shrink: 0;
+    /* 縮小しない         */
 }
 
 /* === チェックボックス ==================================== */
@@ -152,16 +228,16 @@ a.btn_01 {
     display: block;
     text-align: center;
     font-size: 16px;
-    vertical-align: middle;
     text-decoration: none;
     width: 120px;
-    margin: auto;
-    padding: 1rem 4rem;
+    margin: 10px auto;
+    padding: 10px 20px;
     font-weight: bold;
     border: 2px solid #27acd9;
     color: #27acd9;
     background-color: #fff;
     transition: 0.5s;
+    border-radius: 5px;
 }
 
 a.btn_01:hover {
