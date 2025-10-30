@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Background Image config for TUT portal(東京工科大学学生ポータル)",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "東京工科大学学生ポータルにて背景画像をはじめとする各種設定ができます。",
     "icons": {
         "48": "img/icon48.png",
