@@ -1,0 +1,85 @@
+name: Create Release
+
+# バージョンタグ(v1.0.0, v1.1.0など)がpushされたときに実行
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # リポジトリをチェックアウト
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # タグ名からバージョンを取得（v1.0.0 -> 1.0.0）
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      # manifest.jsonのバージョンとタグが一致するか確認
+      - name: Verify version matches manifest.json
+        run: |
+          MANIFEST_VERSION=$(grep '"version"' manifest.json | sed 's/.*"version": "\(.*\)".*/\1/')
+          if [ "$MANIFEST_VERSION" != "${{ steps.get_version.outputs.VERSION }}" ]; then
+            echo "❌ Error: Tag version (${{ steps.get_version.outputs.VERSION }}) does not match manifest.json version ($MANIFEST_VERSION)"
+            exit 1
+          fi
+          echo "✅ Version verified: $MANIFEST_VERSION"
+
+      # Chrome Web Store用のzipファイルを作成
+      - name: Create release zip
+        run: |
+          ZIP_NAME="portal_backimg_v${{ steps.get_version.outputs.VERSION }}.zip"
+          echo "📦 Creating $ZIP_NAME..."
+          
+          zip -r "$ZIP_NAME" \
+            manifest.json \
+            service_worker.js \
+            content_scripts/content_scripts.js \
+            popup/popup.html \
+            popup/css/popup.css \
+            popup/js/script.js \
+            img/ \
+            -x "*.ts" "*/tsconfig.json" "*/.git/*" "*/node_modules/*" "*.zip" "*.sh" "*.py"
+          
+          echo "✅ Created $ZIP_NAME"
+          echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
+
+      # zipファイルの内容を確認（デバッグ用）
+      - name: List zip contents
+        run: |
+          echo "📋 Zip contents:"
+          unzip -l "${{ env.ZIP_NAME }}"
+
+      # GitHub Releaseを作成してzipファイルをアップロード
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ env.ZIP_NAME }}
+          body: |
+            ## 🎉 Version ${{ steps.get_version.outputs.VERSION }}
+            
+            ### 📦 Chrome Web Store用パッケージ
+            - `${{ env.ZIP_NAME }}` をダウンロードして、Chrome Web Storeにアップロードしてください
+            
+            ### 📝 変更内容
+            リリースノートをここに記載してください
+            
+            ### 🔗 リンク
+            - [Chrome Web Store](https://chromewebstore.google.com/detail/background-image-config-f/your-extension-id)
+            - [GitHub Repository](https://github.com/${{ github.repository }})
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 成功通知
+      - name: Success notification
+        run: |
+          echo "✨ Release v${{ steps.get_version.outputs.VERSION }} created successfully!"
+          echo "📦 Zip file: ${{ env.ZIP_NAME }}"
+          echo "🔗 Release URL: https://github.com/${{ github.repository }}/releases/tag/v${{ steps.get_version.outputs.VERSION }}"
