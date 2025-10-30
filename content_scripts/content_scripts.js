@@ -4,15 +4,38 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 /**
+ * チャットエージェントのiframeを削除する関数（複数回試行）
+ * @param {number} maxAttempts 最大試行回数
+ * @param {number} delayMs 試行間隔（ミリ秒）
+ */
+async function removeChatAgentIframe(maxAttempts = 5, delayMs = 500) {
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        const chatAgentIframe = document.querySelector('iframe[title="ChatAgent"]');
+        if (chatAgentIframe) {
+            chatAgentIframe.remove();
+            console.log(`チャットエージェントのiframeを削除しました (試行回数: ${attempt})`);
+            return; // 削除成功したら終了
+        }
+        if (attempt < maxAttempts) {
+            console.log(`チャットエージェントのiframeが見つかりません。${delayMs}ms後に再試行します... (${attempt}/${maxAttempts})`);
+            await sleep(delayMs);
+        }
+    }
+    console.log("チャットエージェントのiframeが見つかりませんでした（全試行完了）");
+}
+/**
  * 背景画像の追加とメニュー欄の背景色に変更を加える関数です
  * @param {string} url 画像URL
  * @param {boolean} dark_mode ダークモードのon/off
+ * @param {boolean} hide_chat_agent チャットエージェントの非表示on/off
  */
-async function changeBackground(url, dark_mode) {
+async function changeBackground(url, dark_mode, hide_chat_agent) {
     console.log("変更を加えています\n画像URL: ");
     console.log(url);
     console.log("ダークモード:");
     console.log(dark_mode);
+    console.log("チャットエージェント非表示:");
+    console.log(hide_chat_agent);
     // 背景画像の設定
     document.body.style.backgroundImage = 'url("' + url + '")'; // 背景画像URL
     document.body.style.backgroundPosition = 'center center'; // 背景位置
@@ -35,11 +58,9 @@ async function changeBackground(url, dark_mode) {
         document.body.style.color = "#000000";
         filter = "";
     }
-    // チャットエージェントのiframeを削除
-    const chatAgentIframe = document.querySelector("#bedore-webagent-inner");
-    if (chatAgentIframe) {
-        chatAgentIframe.remove();
-        console.log("チャットエージェントのiframeを削除しました");
+    // チャットエージェントのiframeを削除（複数回試行）
+    if (hide_chat_agent) {
+        removeChatAgentIframe(10, 10); // 非同期で実行（バックグラウンドで試行を続ける）
     }
     // こうかとんのメッセージを乗っ取る
     const kokatonMessageElement = document.querySelector(".kokaton-messege .message");
@@ -88,10 +109,11 @@ async function changeBackground(url, dark_mode) {
  */
 function load2Call() {
     // chromeの同期ストレージからデータを取得し、chengeBackgroundImageへ画像URLを渡す
-    chrome.storage.sync.get(["img_url", "dark_mode"], function (data) {
+    chrome.storage.sync.get(["img_url", "dark_mode", "hide_chat_agent"], function (data) {
         const url = data["img_url"];
         const dark_mode = data["dark_mode"];
-        changeBackground(url, dark_mode);
+        const hide_chat_agent = data["hide_chat_agent"] !== undefined ? data["hide_chat_agent"] : true;
+        changeBackground(url, dark_mode, hide_chat_agent);
     });
 }
 async function setButtonEvent() {
@@ -103,4 +125,16 @@ async function setButtonEvent() {
 window.addEventListener('load', load2Call);
 chrome.storage.onChanged.addListener(function () {
     load2Call();
+});
+// チャットエージェントが後から追加される場合に備えて、定期的に監視
+chrome.storage.sync.get(["hide_chat_agent"], function (data) {
+    const hide_chat_agent = data["hide_chat_agent"] !== undefined ? data["hide_chat_agent"] : true;
+    if (hide_chat_agent) {
+        // ページ読み込み直後に複数回試行
+        removeChatAgentIframe(5, 500);
+        // さらに遅延してから追加で試行（動的に追加される場合に対応）
+        setTimeout(() => {
+            removeChatAgentIframe(3, 1000);
+        }, 3000);
+    }
 });

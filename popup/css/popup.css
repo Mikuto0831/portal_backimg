@@ -11,7 +11,7 @@ div.inputSwitchArea {
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
     margin: -16px auto -4px;
 }
 
@@ -45,7 +45,8 @@ h2 {
 }
 
 /* === ボタンを表示するエリア ============================== */
-.darkModeSwitchArea {
+.darkModeSwitchArea,
+.hideChatAgentSwitchArea {
     line-height: 24px;
     /* 1行の高さ          */
     letter-spacing: 0;
@@ -66,13 +67,15 @@ h2 {
 }
 
 /* === チェックボックス ==================================== */
-.darkModeSwitchArea input[type="checkbox"] {
+.darkModeSwitchArea input[type="checkbox"],
+.hideChatAgentSwitchArea input[type="checkbox"] {
     display: none;
     /* チェックボックス非表示 */
 }
 
 /* === チェックボックスのラベル（標準） ==================== */
-.darkModeSwitchArea label {
+.darkModeSwitchArea label,
+.hideChatAgentSwitchArea label {
     display: block;
     /* ボックス要素に変更 */
     box-sizing: border-box;
@@ -86,13 +89,15 @@ h2 {
 }
 
 /* === チェックボックスのラベル（ONのとき） ================ */
-.darkModeSwitchArea input[type="checkbox"]:checked+label {
+.darkModeSwitchArea input[type="checkbox"]:checked+label,
+.hideChatAgentSwitchArea input[type="checkbox"]:checked+label {
     border-color: #78bd78;
     /* 選択タブの枠線     */
 }
 
 /* === 表示する文字（標準） ================================ */
-.darkModeSwitchArea label span:after {
+.darkModeSwitchArea label span:after,
+.hideChatAgentSwitchArea label span:after {
     content: "OFF";
     /* 表示する文字       */
     padding: 0 0 0 18px;
@@ -102,7 +107,8 @@ h2 {
 }
 
 /* === 表示する文字（ONのとき） ============================ */
-.darkModeSwitchArea input[type="checkbox"]:checked+label span:after {
+.darkModeSwitchArea input[type="checkbox"]:checked+label span:after,
+.hideChatAgentSwitchArea input[type="checkbox"]:checked+label span:after {
     content: "ON";
     /* 表示する文字       */
     padding: 0 18px 0 0;
@@ -112,7 +118,8 @@ h2 {
 }
 
 /* === 丸部分のSTYLE（標準） =============================== */
-.darkModeSwitchArea #swImg {
+.darkModeSwitchArea #swImg,
+.hideChatAgentSwitchArea #swImgChatAgent {
     position: absolute;
     /* 親要素からの相対位置*/
     width: 22px;
@@ -132,7 +139,8 @@ h2 {
 }
 
 /* === 丸部分のSTYLE（ONのとき） =========================== */
-.darkModeSwitchArea input[type="checkbox"]:checked~#swImg {
+.darkModeSwitchArea input[type="checkbox"]:checked~#swImg,
+.hideChatAgentSwitchArea input[type="checkbox"]:checked~#swImgChatAgent {
     transform: translateX(38px);
     /* 丸も右へ移動       */
     background: #78bd78;
@@ -141,21 +149,22 @@ h2 {
 
 /* 支援ボタン */
 a.btn_01 {
-	display: block;
-	text-align: center;
+    display: block;
+    text-align: center;
     font-size: 16px;
-	vertical-align: middle;
-	text-decoration: none;
-	width: 120px;
-	margin: auto;
-	padding: 1rem 4rem;
-	font-weight: bold;
-	border: 2px solid #27acd9;
-	color: #27acd9;
+    vertical-align: middle;
+    text-decoration: none;
+    width: 120px;
+    margin: auto;
+    padding: 1rem 4rem;
+    font-weight: bold;
+    border: 2px solid #27acd9;
+    color: #27acd9;
     background-color: #fff;
-	transition: 0.5s;
+    transition: 0.5s;
 }
+
 a.btn_01:hover {
-	color: #fff;
-	background: #27acd9;
+    color: #fff;
+    background: #27acd9;
 }
