@@ -6,6 +6,10 @@ on:
     tags:
       - 'v*.*.*'
 
+# GITHUB_TOKENに必要な権限を明示的に付与
+permissions:
+  contents: write  # リリースの作成に必要
+
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
