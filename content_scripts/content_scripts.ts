@@ -41,6 +41,13 @@ async function changeBackground(url: string, dark_mode: boolean) {
         filter = ""
     }
 
+    // チャットエージェントのiframeを削除
+    const chatAgentIframe: HTMLElement | null = document.querySelector("#bedore-webagent-inner");
+    if (chatAgentIframe) {
+        chatAgentIframe.remove();
+        console.log("チャットエージェントのiframeを削除しました");
+    }
+
     // こうかとんのメッセージを乗っ取る
     const kokatonMessageElement: HTMLElement | null = document.querySelector(".kokaton-messege .message");
     if (kokatonMessageElement) {
